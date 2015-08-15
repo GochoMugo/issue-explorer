@@ -1,0 +1,10 @@
+# babel output
+/lib/
+/test/
+/Gruntfile.js
+
+# npm-installed modules
+node_modules/
+
+# logs
+*.log

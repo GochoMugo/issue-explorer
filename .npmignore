@@ -1,0 +1,11 @@
+# raw/es6
+src/
+
+# tests
+test/
+
+# misc
+.editorconfig
+.eslintrc
+.travis.yml
+screenshot.gif

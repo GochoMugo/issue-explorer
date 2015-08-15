@@ -1,0 +1,60 @@
+{
+  "name": "issue-explorer",
+  "version": "0.0.0",
+  "description": "Explore Github issues from your terminal",
+  "main": "lib/index.js",
+  "bin": {
+    "issue-explorer": "bin/issue-explorer",
+    "gie": "bin/issue-explorer"
+  },
+  "scripts": {
+    "build": "babel src -D --out-dir .",
+    "prepublish": "npm run build",
+    "pretest": "npm run build",
+    "prestart": "npm run build",
+    "start": "bin/issue-explorer",
+    "test": "grunt test",
+    "test-coverage": "istanbul cover _mocha --report lcovonly -- -R spec test/test.*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GochoMugo/issue-explorer.git"
+  },
+  "keywords": [
+    "github",
+    "issues",
+    "explorer",
+    "terminal"
+  ],
+  "author": "GochoMugo <mugo@forfuture.co.ke> (https://gochomugo.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GochoMugo/issue-explorer/issues"
+  },
+  "homepage": "https://github.com/GochoMugo/issue-explorer#readme",
+  "dependencies": {
+    "blessed": "^0.1.80",
+    "blessed-contrib": "^2.3.3",
+    "cli-output": "^0.1.0",
+    "github": "^0.2.4",
+    "lodash": "^3.10.0",
+    "moment": "^2.10.6",
+    "word-wrap": "^1.1.0",
+    "simple-argparse": "^0.3.0"
+  },
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "coveralls": "^2.11.3",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-eslint": "^17.0.0",
+    "grunt-mocha-test": "^0.12.7",
+    "istanbul": "^0.3.17",
+    "load-grunt-tasks": "^3.2.0",
+    "mocha-lcov-reporter": "^0.0.2",
+    "should": "^7.0.1"
+  },
+  "engines": {
+      "node": ">= 0.10.0"
+  }
+}
