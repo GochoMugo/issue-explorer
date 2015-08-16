@@ -5,6 +5,8 @@
 
 export default {
   appendErrorLog,
+  authorize,
+  authenticate,
   fetchIssue,
   fetchIssues,
   formatIssue,
@@ -18,6 +20,8 @@ export default {
 
 // built-in modules
 import fs from "fs";
+import os from "os";
+import path from "path";
 
 
 // npm-installed modules
@@ -28,7 +32,12 @@ import slug from "github-slug";
 import wrap from "word-wrap";
 
 
+// own modules
+import pkg from "../package.json";
+
+
 // module variables
+const credpath = path.join(process.env.HOME, ".issue-explorer");
 const github = new Github({
   version: "3.0.0",
   headers: {
@@ -42,6 +51,10 @@ let cache = {
   },
   issue: {},
 };
+
+
+// authenticate, if we can
+authenticate();
 
 
 /**
@@ -263,4 +276,71 @@ function getShorthandFromGit(abspath, done) {
  */
 function appendErrorLog(err) {
   fs.appendFileSync("gie.log", `${err.message}\n${err.stack}`);
+}
+
+
+/**
+ * Authorize with Github
+ *
+ * @param {Object} creds
+ * @param {String} creds.username
+ * @param {String} creds.password
+ * @param {Function} done
+ */
+function authorize({ username, password }, done) {
+  const name = process.env.USER + "@" + os.hostname();
+  const time = moment().format();
+  const scopes = ["repo"];
+  const note = `${pkg.name} (${name}) [${time}]`;
+  const note_url = pkg.homepage; // eslint-disable-line camelcase
+  github.authenticate({
+    type: "basic",
+    username,
+    password,
+  });
+  github.authorization.create({ scopes, note, note_url }, function(authErr, res) { // eslint-disable-line camelcase
+    if (authErr) {
+      return done(authErr);
+    }
+
+    const creds = {
+      username,
+      token: res.token,
+    };
+
+    // store credentials
+    fs.writeFileSync(credpath, JSON.stringify(creds));
+
+    authenticate(creds);
+    return done(null);
+  });
+
+}
+
+/**
+ * Authenticate github client
+ *
+ * @param {Object} creds
+ * @param {String} creds.username
+ * @param {String} creds.token
+ */
+function authenticate(creds={}) {
+  if (!(creds.username && creds.token)) {
+    try {
+      let data = fs.readFileSync(credpath);
+      data = JSON.parse(data);
+      creds.username = data.username;
+      creds.token = data.token;
+    } catch(err) {
+      if (err.code === "ENOENT") {
+        return;
+      }
+      throw err;
+    }
+  }
+  github.authenticate({
+    type: "token",
+    username: creds.username,
+    token: creds.token,
+  });
 }

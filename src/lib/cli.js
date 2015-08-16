@@ -4,6 +4,7 @@
 
 
 // npm-installed modules
+import inquirer from "inquirer";
 import parser from "simple-argparse";
 import out from "cli-output";
 
@@ -46,6 +47,36 @@ parser
       this.shorthand = sh;
       run.loop(this);
     }.bind(this));
+  }).option("t", "auth", "authenticate with Github", function() {
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "username",
+        message: "Github username",
+        validate: function(username) {
+          return username !== "" ? true : "invalid username";
+        },
+      },
+      {
+        type: "password",
+        name: "password",
+        message: "Password",
+        validate: function(password) {
+          return password !== "" ? true : "invalid password";
+        },
+      },
+    ], function(answers) {
+      out.info("authorizing...");
+      return data.authorize(answers, function(err) {
+        if (err) {
+          return out.error("authorization did not complete successfully: %s", err);
+        }
+        out.success(`${pkg.name} authorized`);
+        out.info("you can always update/revoke access token at https://github.com/settings/tokens");
+        out.info("go out and explore more!");
+        return null;
+      });
+    });
   }).parse();
 
 

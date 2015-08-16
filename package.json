@@ -39,6 +39,7 @@
     "fixed-object": "^0.0.0",
     "github": "^0.2.4",
     "github-slug": "^0.0.2",
+    "inquirer": "^0.9.0",
     "lodash": "^3.10.0",
     "moment": "^2.10.6",
     "word-wrap": "^1.1.0",
