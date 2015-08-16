@@ -25,6 +25,8 @@ $ issue-explorer open RepoName/UserName      # open issues
 $ issue-explorer closed RepoName/UserName    # closed issues
 
 $ issue-explorer [open|all|closed] RepoName/UserName#7 # single issue
+
+$ issue-explorer [open|all|closed]    # detects repo from cwd and explores issues
 ```
 
 These commands will open a nice, simple interface for browsing.

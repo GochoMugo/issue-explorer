@@ -8,6 +8,7 @@ export default {
   fetchIssues,
   formatIssue,
   formatIssues,
+  getShorthandFromGit,
   parseIssueString,
   parseShorthand,
   targetsOneIssue,
@@ -18,6 +19,7 @@ export default {
 import _ from "lodash";
 import Github from "github";
 import moment from "moment";
+import slug from "github-slug";
 import wrap from "word-wrap";
 
 
@@ -224,4 +226,15 @@ function fetchIssue(options, done) {
     });
 
   });
+}
+
+
+/**
+ * Return the repo shorthand using .git/ directory in directory
+ *
+ * @param {String} abspath - path to repo directory
+ * @param {String} cb - callback(err, shorthand)
+ */
+function getShorthandFromGit(abspath, done) {
+  return slug(abspath, done);
 }

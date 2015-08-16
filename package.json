@@ -1,6 +1,6 @@
 {
   "name": "issue-explorer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Explore Github issues from your terminal",
   "main": "lib/index.js",
   "bin": {
@@ -37,6 +37,7 @@
     "blessed-contrib": "^2.3.3",
     "cli-output": "^0.1.0",
     "github": "^0.2.4",
+    "github-slug": "^0.0.2",
     "lodash": "^3.10.0",
     "moment": "^2.10.6",
     "word-wrap": "^1.1.0",
