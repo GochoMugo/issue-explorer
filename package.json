@@ -36,6 +36,7 @@
     "blessed": "^0.1.80",
     "blessed-contrib": "^2.3.3",
     "cli-output": "^0.1.0",
+    "fixed-object": "^0.0.0",
     "github": "^0.2.4",
     "github-slug": "^0.0.2",
     "lodash": "^3.10.0",

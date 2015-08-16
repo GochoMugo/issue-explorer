@@ -9,7 +9,9 @@ export default {
 
 
 // npm-installed modules
+import _ from "lodash";
 import blessed from "blessed";
+import fixed from "fixed-object";
 
 
 // own modules
@@ -36,6 +38,8 @@ function exit() {
  * @param {Object} options - init options
  */
 function loop(options) {
+  options = fixed(options);
+
   screen = blessed.screen({
     smartCSR: true,
   });
@@ -50,43 +54,56 @@ function loop(options) {
   /**
    * show a single issue
    */
-  function one(num) {
+  function one(fetchOptions) {
     ui.showLoading("fetching issue...");
-    // show issue #num if number is given (selecting from list in terminal)
-    if (num) {
-      options.number = num;
-    }
-    data.fetchIssue(options, function(err, issue) {
+    data.fetchIssue(fetchOptions, function(err, issue) {
       ui.hideLoading();
       if (err) {
         throw err;
       }
       // show issue. when user is done with the issue, go back to issues list
-      ui.showIssue(screen, issue, data.formatIssue(issue), all);
+      ui.showIssue(screen, issue, data.formatIssue(issue));
     });
   }
 
   /**
    * show multiple issues
    */
-  function all() {
+  function all(fetchOptions) {
     ui.showLoading("fetching issues...");
-    data.fetchIssues(options, function(err, issues) {
+    data.fetchIssues(fetchOptions, function(err, issues) {
       ui.hideLoading();
       if (err) {
         throw err;
       }
       // show all issues. if a user chooses one from the list, browse it
-      ui.showAllIssues(screen, issues, data.formatIssues(issues), function(issueString) {
-        one(data.parseIssueString(issueString).number);
-      });
+      ui.showAllIssues(screen, issues, data.formatIssues(issues));
     });
   }
 
+  // load more issues if user wants that
+  ui.getTable("issues").on("more", function loadMore() {
+    let ops = _.cloneDeep(options);
+    ops.loadMore = true;
+    all(ops);
+  })
+  // load a specific issue
+  .on("select", function(issueString) {
+    let ops = _.cloneDeep(options);
+    ops.number = data.parseIssueString(issueString).number;
+    one(ops);
+  });
+
+  // user cancelling from an issue
+  ui.getTable("issue").on("cancel", function() {
+    let ops = _.cloneDeep(options);
+    all(ops);
+  });
+
   // start the fetch loop
   if (data.targetsOneIssue(options.shorthand)) {
-    one();
+    one(_.cloneDeep(options));
   } else {
-    all();
+    all(_.cloneDeep(options));
   }
 }

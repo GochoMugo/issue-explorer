@@ -87,8 +87,12 @@ class Table extends EventEmitter {
   _init() {
     let me = this;
     // to select an item
-    this._table.rows.key(["enter", "space"], function() {
+    this._table.rows.key(["enter"], function() {
       me.emit("select", me._selected.content);
+    });
+    // want more items
+    this._table.rows.key(["space"], function() {
+      me.emit("more");
     });
     // track user
     this._table.rows.on("select", function(a) {
@@ -96,10 +100,7 @@ class Table extends EventEmitter {
     });
     // cancel
     function cancel() {
-      if (me._config.alwaysOnTop) {
-        return;
-      }
-      me.hide();
+      me.emit("cancel");
     }
     this._table.rows.on("cancel", cancel);
     this._table.rows.key(["escape", "q", "C-c"], cancel);
@@ -133,8 +134,13 @@ class Table extends EventEmitter {
    * hide the table from user
    */
   hide() {
+    if (this._table.hidden) {
+      return this;
+    }
+    if (this === tables._active) {
+      tables._active = null;
+    }
     this._table.hide();
-    this.emit("cancel");
     return this;
   }
 }
@@ -152,11 +158,11 @@ function getTable(name) {
     tables = {
       issues: new Table(_.merge({}, commonOptions, {
         columnSpacing: 1,
-        columnWidth: [5, 70, 15, 15, 15],
-      }), {alwaysOnTop: true}),
+        columnWidth: [5, 80, 15, 15, 15],
+      })),
       issue: new Table(_.merge({}, commonOptions, {
         columnSpacing: 3,
-        columnWidth: [20, 101],
+        columnWidth: [20, 110],
       })),
     };
   }
@@ -171,16 +177,15 @@ function getTable(name) {
  * @param {blessed.screen} screen
  * @param {github.Issues[]} issues
  * @param {Array[]} data
- * @param {Function} cb
  */
-function showAllIssues(screen, issues, data, cb) {
+function showAllIssues(screen, issues, data) {
   getTable("issues")
     .show(screen, {
       headers: ["#", "title", "reporter", "assignee", "updated at"],
       data,
     }, {
       label: `${issues.shorthand} (${issues.state})`,
-    }).once("select", cb);
+    });
 }
 
 
@@ -190,9 +195,8 @@ function showAllIssues(screen, issues, data, cb) {
  * @param {blessed.screen} screen
  * @param {github.Issue} issue
  * @param {Array[]} data
- * @param {Function} cb
  */
-function showIssue(screen, issue, data, cb) {
+function showIssue(screen, issue, data) {
   getTable("issue")
     .show(screen, {
       headers: ["githubber", "body"],
@@ -201,7 +205,7 @@ function showIssue(screen, issue, data, cb) {
     }, {
       reset: true,
       label: `${issue.shorthand}: ${issue.title}`,
-    }).once("cancel", cb);
+    });
 }
 
 

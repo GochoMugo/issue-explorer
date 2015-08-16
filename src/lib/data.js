@@ -4,6 +4,7 @@
 
 
 export default {
+  appendErrorLog,
   fetchIssue,
   fetchIssues,
   formatIssue,
@@ -13,6 +14,10 @@ export default {
   parseShorthand,
   targetsOneIssue,
 };
+
+
+// built-in modules
+import fs from "fs";
 
 
 // npm-installed modules
@@ -32,6 +37,9 @@ const github = new Github({
 });
 let cache = {
   issues: {},
+  trackers: {
+    page: {},
+  },
   issue: {},
 };
 
@@ -162,15 +170,18 @@ function targetsOneIssue(shorthand) {
  */
 function fetchIssues(options, done) {
   let descriptor = parseShorthand(options.shorthand);
+  let collection = cache.issues[descriptor.clean];
+  let page = cache.trackers.page[descriptor.clean] || 1;
 
-  if (cache.issues[descriptor.clean]) {
-    return done(null, cache.issues[descriptor.clean]);
+  if ((!options.loadMore) && collection) {
+    return done(null, collection);
   }
 
   var query = _.merge({}, {
     user: descriptor.user,
     repo: descriptor.repo,
     state: "open",
+    page: page,
   }, options);
 
   github.issues.repoIssues(query, function(err, issues) {
@@ -179,8 +190,13 @@ function fetchIssues(options, done) {
     }
     issues.shorthand = descriptor.clean;
     issues.state = query.state;
-    cache.issues[descriptor.clean] = issues;
-    return done(null, issues);
+    if (collection) {
+      collection.push.apply(collection, issues);
+    } else {
+      cache.issues[descriptor.clean] = collection = issues;
+    }
+    cache.trackers.page[descriptor.clean] = page + 1;
+    return done(null, collection);
   });
 }
 
@@ -237,4 +253,14 @@ function fetchIssue(options, done) {
  */
 function getShorthandFromGit(abspath, done) {
   return slug(abspath, done);
+}
+
+
+/**
+ * Write to an error log
+ *
+ * @param {Error} err
+ */
+function appendErrorLog(err) {
+  fs.appendFileSync("gie.log", `${err.message}\n${err.stack}`);
 }

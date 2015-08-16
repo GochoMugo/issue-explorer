@@ -18,6 +18,7 @@ import run from "./run";
 process.on("uncaughtException", function(err) {
   out.error("an error occurred");
   out.error("    %s", err);
+  data.appendErrorLog(err);
   process.exit(1); // eslint-disable-line
 });
 
