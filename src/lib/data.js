@@ -47,21 +47,21 @@ let cache = {
 function parseShorthand(shorthand) {
   let slashIndex = shorthand.indexOf("/");
   if (slashIndex === -1) {
-    throw new Error("invalid shorthand: slash missing from shorthand: %s", shorthand);
+    throw new Error(`invalid shorthand: slash missing from shorthand: ${shorthand}`);
   }
   let hashIndex = shorthand.indexOf("#");
   if (hashIndex !== -1 && hashIndex <= slashIndex) {
-    throw new Error("invalid shorthand: hash before slash: %s", shorthand);
+    throw new Error(`invalid shorthand: hash before slash: ${shorthand}`);
   }
   let endIndex = hashIndex === -1 ? shorthand.length : hashIndex;
   const user = shorthand.substring(0, slashIndex);
   const repo = shorthand.substring(slashIndex + 1, endIndex);
   const number = hashIndex === -1 ? null : Number(shorthand.substring(hashIndex + 1));
   if (number !== null && isNaN(number)) {
-    throw new Error("invalid shorthand: issue number is NaN: %s", shorthand);
+    throw new Error(`invalid shorthand: issue number is NaN: ${shorthand}`);
   }
   if (number === 0) {
-    throw new Error("invalid shorthand: issue number can not be Zero: %s", shorthand);
+    throw new Error(`invalid shorthand: issue number can not be Zero: ${shorthand}`);
   }
   return {
     user,

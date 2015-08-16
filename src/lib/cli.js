@@ -13,6 +13,14 @@ import pkg from "../package.json";
 import run from "./run";
 
 
+// catch-all
+process.on("uncaughtException", function(err) {
+  out.error("an error occurred");
+  out.error("    %s", err);
+  process.exit(1); // eslint-disable-line
+});
+
+
 // define interface
 parser
   .description(pkg.name, pkg.description)
@@ -25,10 +33,12 @@ parser
     run.loop(this);
   }).option("o", "open", "open issues", function(shorthand) {
     ensureShorthand(shorthand);
-    this.state = "all";
+    this.shorthand = shorthand;
+    this.state = "open";
     run.loop(this);
   }).option("c", "closed", "closed issues", function(shorthand) {
     ensureShorthand(shorthand);
+    this.shorthand = shorthand;
     this.state = "closed";
     run.loop(this);
   }).parse();

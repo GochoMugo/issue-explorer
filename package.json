@@ -1,6 +1,6 @@
 {
   "name": "issue-explorer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Explore Github issues from your terminal",
   "main": "lib/index.js",
   "bin": {
