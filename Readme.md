@@ -31,13 +31,27 @@ $ issue-explorer [open|all|closed]    # detects repo from cwd and explores issue
 
 These commands will open a nice, simple interface for browsing.
 
-* To navigate up and down, use the normal arrow keys
-* press `Enter` on an issue on the list to open the single issue
-* navigate back to the list of issues using the key `q`.
-* exit using `Cmd/Ctrl + C` or `esc`.
+* To **navigate up and down**, use the normal arrow keys
+* press `Enter` on an issue on the list to **open the single issue**
+* press `Space` to **load more** issues
+* **navigate back** to the list of issues using the key `q`.
+* **exit** using `Cmd/Ctrl + C` or `esc`.
 * **`gie`** is an alias for `issue-explorer`
 
 > **Note:** opening a single issue will succeed whether it is open or closed
+
+
+## authorization:
+
+You can use the application without authenticating with Github. However, you face the risk of going over the limit of requests allowed per hour. Authenticated requests have a [way higher rate limit](https://developer.github.com/v3/#rate-limiting).
+
+To authorize issue-explorer:
+
+```bash
+$ issue-explorer auth
+```
+
+This will prompt you for your username and password. These are used to create an access token that will be stored on your computer and used in consequent requests rather than your password. You can view/update/revoke the created access token in [your settings panel](https://github.com/settings/tokens).
 
 
 ## license:
