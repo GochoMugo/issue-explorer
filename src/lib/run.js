@@ -52,6 +52,17 @@ function loop(options) {
   ui.init(screen, pkg);
 
   /**
+   * Handling errors
+   *
+   * @param {Error} err
+   */
+  function handleError(err) {
+    ui.showErrorMessage(err.message, function() {
+      throw err;
+    });
+  }
+
+  /**
    * show a single issue
    */
   function one(fetchOptions) {
@@ -59,7 +70,7 @@ function loop(options) {
     data.fetchIssue(fetchOptions, function(err, issue) {
       ui.hideLoading();
       if (err) {
-        throw err;
+        return handleError(err);
       }
       // show issue. when user is done with the issue, go back to issues list
       ui.showIssue(screen, issue, data.formatIssue(issue));
@@ -74,7 +85,7 @@ function loop(options) {
     data.fetchIssues(fetchOptions, function(err, issues) {
       ui.hideLoading();
       if (err) {
-        throw err;
+        return handleError(err);
       }
       // show all issues. if a user chooses one from the list, browse it
       ui.showAllIssues(screen, issues, data.formatIssues(issues));

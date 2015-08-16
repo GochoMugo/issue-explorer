@@ -199,7 +199,7 @@ function fetchIssues(options, done) {
 
   github.issues.repoIssues(query, function(err, issues) {
     if (err) {
-      return done(err);
+      return done(wrapError(err));
     }
     issues.shorthand = descriptor.clean;
     issues.state = query.state;
@@ -236,7 +236,7 @@ function fetchIssue(options, done) {
     number: number,
   }, function(err, issue) {
     if (err) {
-      return done(err);
+      return done(wrapError(err));
     }
 
     github.issues.getComments({
@@ -245,7 +245,7 @@ function fetchIssue(options, done) {
       number: number,
     }, function(err2, comments) {
       if (err2) {
-        return done(err2);
+        return done(wrapError(err2));
       }
 
       issue.comments = comments;
@@ -275,7 +275,7 @@ function getShorthandFromGit(abspath, done) {
  * @param {Error} err
  */
 function appendErrorLog(err) {
-  fs.appendFileSync("gie.log", `${err.message}\n${err.stack}`);
+  fs.appendFileSync("gie.log", `---\n${err.message}: ${err.stack}\n---\n`);
 }
 
 
@@ -343,4 +343,18 @@ function authenticate(creds={}) {
     username: creds.username,
     token: creds.token,
   });
+}
+
+
+/**
+ * Wrap requests error
+ *
+ * @param {Error} err
+ * @return {Error}
+ */
+function wrapError(err) {
+  let message = JSON.parse(err).message;
+  let newErr = new Error(`could not fetch: ${message}`);
+  newErr.stack = err.stack;
+  return newErr;
 }

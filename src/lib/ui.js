@@ -10,6 +10,7 @@ export default {
   showIssue,
   showLoading,
   hideLoading,
+  showErrorMessage,
 };
 
 
@@ -49,6 +50,16 @@ let commonOptions = {
  * @return {Object} terminal DOM*
  */
 function init(screen, pkg) {
+  dom.message = blessed.message({
+    parent: screen,
+    top: "center",
+    left: "center",
+    align: "center",
+    border: "line",
+    height: 5,
+    width: 80,
+    hidden: true,
+  });
   dom.loading = blessed.loading({
     parent: screen,
     top: "center",
@@ -227,4 +238,19 @@ function showLoading(message) {
  */
 function hideLoading() {
   dom.loading.stop();
+}
+
+
+/**
+ * Show error message
+ *
+ * @param {String} message
+ * @param {Function} done
+ */
+function showErrorMessage(message, done) {
+  if (tables._active) {
+    tables._active.hide();
+  }
+  hideLoading();
+  dom.message.error(message, 0, done);
 }
