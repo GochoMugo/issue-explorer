@@ -11,6 +11,7 @@ export default {
   showLoading,
   hideLoading,
   showErrorMessage,
+  showMessage,
 };
 
 
@@ -90,6 +91,7 @@ class Table extends EventEmitter {
     super();
     this._table = contrib.table(initDict);
     this._selected = null;
+    this._data = null;
     this._config = options || { };
     this._init();
     return this;
@@ -119,6 +121,24 @@ class Table extends EventEmitter {
   }
 
   /**
+   * Allow binding to keypresses
+   *
+   * @param {String|String[]} keys
+   * @param {Function} callback(key, metaKeys, tableState)
+   */
+  key(keys, callback) {
+    let me = this;
+    me._table.rows.key(keys, function() {
+      let args = _.toArray(arguments);
+      args.push({
+        data: me._data,
+      });
+      callback.apply(null, args);
+    });
+    return me;
+  }
+
+  /**
    * show the table to user
    *
    * @param {blessed.screen} screen
@@ -127,6 +147,9 @@ class Table extends EventEmitter {
    */
   show(screen, data, options={}) {
     this._table.setData(data);
+    if (options.data) {
+      this._data = options.data;
+    }
     if (options.reset) {
       this._table.rows.select(0);
     }
@@ -212,8 +235,8 @@ function showIssue(screen, issue, data) {
     .show(screen, {
       headers: ["githubber", "body"],
       data,
-      label: issue.shorthand,
     }, {
+      data: issue,
       reset: true,
       label: `${issue.shorthand}: ${issue.title}`,
     });
@@ -253,4 +276,16 @@ function showErrorMessage(message, done) {
   }
   hideLoading();
   dom.message.error(message, 0, done);
+}
+
+
+/**
+ * Show normal message
+ *
+ * @param {String} message
+ * @param {Function} done
+ */
+function showMessage(message, done=function() {}) {
+  dom.message.setFront();
+  dom.message.display(message, done);
 }

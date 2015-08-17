@@ -12,6 +12,7 @@ export default {
 import _ from "lodash";
 import blessed from "blessed";
 import fixed from "fixed-object";
+import open from "open";
 
 
 // own modules
@@ -109,6 +110,11 @@ function loop(options) {
   ui.getTable("issue").on("cancel", function() {
     let ops = _.cloneDeep(options);
     all(ops);
+  })
+  // opening in browser
+  .key("o", function(key, meta, state) {
+    ui.showMessage("opening in browser");
+    open(state.data.html_url);
   });
 
   // start the fetch loop
