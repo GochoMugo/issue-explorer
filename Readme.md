@@ -32,8 +32,9 @@ $ issue-explorer [open|all|closed]    # detects repo from cwd and explores issue
 These commands will open a nice, simple interface for browsing.
 
 * To **navigate up and down**, use the normal arrow keys
-* press `Enter` on an issue on the list to **open the single issue**
 * press `Space` to **load more** issues
+* press `Enter` on an issue on the list to **open the single issue**
+* press `o` on the single issue to **open in browser**
 * **navigate back** to the list of issues using the key `q`.
 * **exit** using `Cmd/Ctrl + C` or `esc`.
 * **`gie`** is an alias for `issue-explorer`
@@ -52,6 +53,14 @@ $ issue-explorer auth
 ```
 
 This will prompt you for your username and password. These are used to create an access token that will be stored on your computer and used in consequent requests rather than your password. You can view/update/revoke the created access token in [your settings panel](https://github.com/settings/tokens).
+
+
+## misc:
+
+**Errors** are appended to a **gie.log** file in the current working directory. If the interface suddenly shuts down due to an error, you can inspect the file. Please **copy over the log** when [reporting the issue](https://github.com/GochoMugo/issue-explorer/issues).
+
+
+> HAPPY EXPLORING! :sunglasses:
 
 
 ## license:
