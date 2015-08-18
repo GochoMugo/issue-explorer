@@ -1,11 +1,11 @@
 
 # issue-explorer
 
-> Explore Github issues from your terminal
+> Explore Github issues from your terminal. See [introductory post](https://gochomugo.github.io/musings/issue-explorer).
 
 [![node](https://img.shields.io/node/v/issue-explorer.svg?style=flat-square)](https://www.npmjs.com/package/issue-explorer) [![npm](https://img.shields.io/npm/v/issue-explorer.svg?style=flat-square)](https://www.npmjs.com/package/issue-explorer) [![Travis](https://img.shields.io/travis/GochoMugo/issue-explorer.svg?style=flat-square)](https://travis-ci.org/GochoMugo/issue-explorer) [![Gemnasium](https://img.shields.io/gemnasium/GochoMugo/issue-explorer.svg?style=flat-square)](https://gemnasium.com/GochoMugo/issue-explorer) [![Coveralls](https://img.shields.io/coveralls/GochoMugo/issue-explorer.svg?style=flat-square)](https://coveralls.io/github/GochoMugo/issue-explorer?branch=master)
 
-[![Screenshot](https://raw.githubusercontent.com/GochoMugo/issue-explorer/master/screenshot.gif)](https://github.com/GochoMugo/issue-explorer)
+[![asciicast](https://asciinema.org/a/25174.png)](https://asciinema.org/a/25174)
 
 
 ## installation:
