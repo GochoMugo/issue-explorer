@@ -29,6 +29,7 @@ import _ from "lodash";
 import Github from "github";
 import moment from "moment";
 import slug from "github-slug";
+import name from "username";
 import wrap from "word-wrap";
 
 
@@ -288,33 +289,37 @@ function appendErrorLog(err) {
  * @param {Function} done
  */
 function authorize({ username, password }, done) {
-  const name = process.env.USER + "@" + os.hostname();
-  const time = moment().format();
-  const scopes = ["repo"];
-  const note = `${pkg.name} (${name}) [${time}]`;
-  const note_url = pkg.homepage; // eslint-disable-line camelcase
-  github.authenticate({
-    type: "basic",
-    username,
-    password,
-  });
-  github.authorization.create({ scopes, note, note_url }, function(authErr, res) { // eslint-disable-line camelcase
-    if (authErr) {
-      return done(authErr);
+  return name(function(err, myname) {
+    if (err) {
+      myname = "me";
     }
-
-    const creds = {
+    const machinename = myname + "@" + os.hostname();
+    const time = moment().format();
+    const scopes = ["repo"];
+    const note = `${pkg.name} (${machinename}) [${time}]`;
+    const note_url = pkg.homepage; // eslint-disable-line camelcase
+    github.authenticate({
+      type: "basic",
       username,
-      token: res.token,
-    };
+      password,
+    });
+    github.authorization.create({ scopes, note, note_url }, function(authErr, res) { // eslint-disable-line camelcase
+      if (authErr) {
+        return done(authErr);
+      }
 
-    // store credentials
-    fs.writeFileSync(credpath, JSON.stringify(creds));
+      const creds = {
+        username,
+        token: res.token,
+      };
 
-    authenticate(creds);
-    return done(null);
+      // store credentials
+      fs.writeFileSync(credpath, JSON.stringify(creds));
+
+      authenticate(creds);
+      return done(null);
+    });
   });
-
 }
 
 /**
