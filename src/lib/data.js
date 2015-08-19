@@ -21,15 +21,15 @@ export default {
 // built-in modules
 import fs from "fs";
 import os from "os";
-import path from "path";
 
 
 // npm-installed modules
 import _ from "lodash";
 import Github from "github";
 import moment from "moment";
-import slug from "github-slug";
 import name from "username";
+import slug from "github-slug";
+import untildify from "untildify";
 import wrap from "word-wrap";
 
 
@@ -38,11 +38,11 @@ import pkg from "../package.json";
 
 
 // module variables
-const credpath = path.join(process.env.HOME, ".issue-explorer");
+const credpath = untildify("~/.issue-explorer");
 const github = new Github({
   version: "3.0.0",
   headers: {
-    "user-agent": "issue-explorer",
+    "user-agent": `${pkg.name}`,
   },
 });
 let cache = {
