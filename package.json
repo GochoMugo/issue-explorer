@@ -33,34 +33,34 @@
   },
   "homepage": "https://github.com/GochoMugo/issue-explorer#readme",
   "dependencies": {
-    "blessed": "^0.1.80",
-    "blessed-contrib": "^2.3.3",
-    "cli-output": "^0.1.0",
-    "fixed-object": "^0.0.0",
-    "github": "^0.2.4",
-    "github-slug": "^0.0.2",
-    "inquirer": "^0.9.0",
-    "lodash": "^3.10.0",
-    "moment": "^2.10.6",
-    "open": "^0.0.5",
-    "word-wrap": "^1.1.0",
-    "simple-argparse": "^0.3.0",
-    "untildify": "^2.1.0",
-    "username": "^1.0.0"
+    "blessed": "0.1.81",
+    "blessed-contrib": "2.3.3",
+    "cli-output": "0.1.0",
+    "fixed-object": "0.0.0",
+    "github": "0.2.4",
+    "github-slug": "0.0.2",
+    "inquirer": "0.9.0",
+    "lodash": "3.10.1",
+    "moment": "2.10.6",
+    "open": "0.0.5",
+    "word-wrap": "1.1.0",
+    "simple-argparse": "0.3.0",
+    "untildify": "2.1.0",
+    "username": "1.0.0"
   },
   "devDependencies": {
-    "babel": "^5.8.21",
-    "coveralls": "^2.11.3",
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
-    "grunt-eslint": "^17.0.0",
-    "grunt-mocha-test": "^0.12.7",
-    "istanbul": "^0.3.17",
-    "load-grunt-tasks": "^3.2.0",
-    "mocha-lcov-reporter": "^0.0.2",
-    "should": "^7.0.1"
+    "babel": "5.8.23",
+    "coveralls": "2.11.4",
+    "grunt": "0.4.5",
+    "grunt-cli": "0.1.13",
+    "grunt-eslint": "17.2.0",
+    "grunt-mocha-test": "0.12.7",
+    "istanbul": "0.3.21",
+    "load-grunt-tasks": "3.3.0",
+    "mocha-lcov-reporter": "0.0.2",
+    "should": "7.1.0"
   },
   "engines": {
-      "node": ">= 0.10.0"
+    "node": ">= 0.10.0"
   }
 }
