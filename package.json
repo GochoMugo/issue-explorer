@@ -46,7 +46,7 @@
     "word-wrap": "1.1.0",
     "simple-argparse": "0.3.0",
     "untildify": "2.1.0",
-    "username": "1.0.0"
+    "username": "1.0.1"
   },
   "devDependencies": {
     "babel": "5.8.23",
