@@ -34,7 +34,7 @@
   "homepage": "https://github.com/GochoMugo/issue-explorer#readme",
   "dependencies": {
     "blessed": "0.1.81",
-    "blessed-contrib": "2.3.3",
+    "blessed-contrib": "2.4.1",
     "cli-output": "0.1.0",
     "fixed-object": "0.0.0",
     "github": "0.2.4",
